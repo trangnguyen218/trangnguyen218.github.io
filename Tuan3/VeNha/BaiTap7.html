@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Bài Tập 7</title>
+  <style>
+    body {
+      margin: 50px;
+      background: #f8f8f8;
+      font-family: Arial, sans-serif;
+    }
+
+    /* --- Wrapper tổng --- */
+    #wrapper {
+      width: 450px;
+      height: 600px;
+      margin: 0 auto;
+      background: #fff;
+      border: 2px solid #000;  /* viền bao quanh */
+      position: relative;
+      box-shadow: -25px 25px 40px rgba(0, 0, 0, 0.4);
+
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      grid-template-rows: 80px 1fr 60px;
+      grid-template-areas:
+        "header header"
+        "nav main"
+        "footer footer";
+      gap: 10px;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    /* --- Chữ wrapper ở góc trên --- */
+    #wrapper::before {
+      content: "wrapper";
+      position: absolute;
+      top: -22px;
+      left: 8px;
+      font-size: 16px;
+      background: #f8f8f8;
+      padding: 0 4px;
+    }
+
+    /* --- Các khối bên trong --- */
+    header, nav, main, footer {
+      border: 2px solid #000;
+      background: #fff;
+      box-sizing: border-box;
+      padding: 8px;
+    }
+
+    header { grid-area: header; }
+    nav    { grid-area: nav; }
+    main   { grid-area: main; }
+    footer { grid-area: footer; }
+  </style>
+</head>
+<body>
+  <div id="wrapper">
+    <header>header</header>
+    <nav>nav</nav>
+    <main>main</main>
+    <footer>footer</footer>
+  </div>
+</body>
+</html>

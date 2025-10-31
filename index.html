@@ -1,23 +1,137 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trang Chủ - UEH</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Bài Tập & Thông Tin Cá Nhân - Nguyễn Thị Hà Trang</title>
+    <!-- Đặt trong <head> của tất cả các trang -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="/favicon_io/site.webmanifest">
+    <link rel="icon" href="/favicon_io/favicon.ico" type="image/x-icon">
 
-  <!-- Favicon -->
-  <link rel="apple-touch-icon" sizes="180x180" href="/favicon_io/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon_io/favicon-16x16.png">
-  <link rel="manifest" href="/favicon_io/site.webmanifest">
-  <link rel="icon" href="/favicon_io/favicon.ico" type="image/x-icon">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 30px;
+            background-color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+        }
+        
+        /* PHẦN 1: THÔNG TIN CÁ NHÂN */
+        .profile {
+            text-align: center;
+            padding-bottom: 25px;
+            border-bottom: 3px solid #007bff;
+            margin-bottom: 35px;
+        }
+        .profile img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #007bff;
+            margin-bottom: 15px;
+        }
+        .profile h1 {
+            color: #222;
+            margin: 5px 0;
+            font-size: 2em;
+        }
+        .profile p {
+            margin: 5px 0;
+            font-size: 1.1em;
+            color: #555;
+        }
+        .social-links a {
+            margin: 0 15px;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        .social-links a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+
+        /* PHẦN 2: MỤC LỤC BÀI TẬP */
+        .exercise-list h2 {
+            color: #007bff;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .exercise-list ul {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .exercise-list li {
+            background: #e6f0ff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, background 0.3s;
+            text-align: center;
+        }
+        .exercise-list li:hover {
+            background: #cce0ff;
+            transform: translateY(-3px);
+        }
+        .exercise-list a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            display: block;
+        }
+    </style>
 </head>
 <body>
-  <h1>Chào mừng đến trang cá nhân của Trang Nguyễn 🎓</h1>
-  <p>Chọn tuần để xem bài tập:</p>
-  <ul>
-    <li><a href="/Tuan%202/">Tuần 2</a></li>
-    <li><a href="/Tuan3/">Tuần 3</a></li>
-  </ul>
+
+<div class="container">
+    
+    <div class="profile">
+        <img 
+            src="https://www.vietnamworks.com/hrinsider/wp-content/uploads/2023/12/anh-den-ngau.jpeg" 
+            alt="Ảnh Đại Diện Nguyễn Thị Hà Trang"
+        >
+        <h1>NGUYỄN THỊ HÀ TRANG</h1>
+        <p>MSSV: 31231025299</p>
+        
+        <div class="social-links">
+            <a href="https://web.facebook.com/hatrang.nguyenthi.752861">Facebook</a>
+        </div>
+    </div>
+
+    <div class="exercise-list">
+        <h2>Mục Lục 9 Bài Tập HTML</h2>
+        <ul>
+            <li><a href="/Tuần 2/Về nhà/BaiTap1.html" target="_blank">Bài Tập 1</a></li>
+            <li><a href="/Tuần 2/Về nhà/BaiTap2.html" target="_blank">Bài Tập 2</a></li>
+            <li><a href="/Tuần 2/Về nhà/BaiTap3.html" target="_blank">Bài Tập 3</a></li>
+            <li><a href="/Tuần 2/Về nhà/BaiTap4.html" target="_blank">Bài Tập 4</a></li>
+            <li><a href="/Tuần 2/Về nhà/BaiTap5.html" target="_blank">Bài Tập 5</a></li>
+            <li><a href="/Tuần 2/Về nhà/BaiTap6.html" target="_blank">Bài Tập 6</a></li>
+            <li><a href="/Tuần 2/Về nhà/BaiTap7.html" target="_blank">Bài Tập 7</a></li>
+            <li><a href="/Tuần 2/Về nhà/BaiTap8.html" target="_blank">Bài Tập 8</a></li>
+            <li><a href="/Tuần 2/Về nhà/BaiTap9.html" target="_blank">Bài Tập 9</a></li>
+        </ul>
+    </div>
+    
+</div>
+
 </body>
-</html>
+</html
