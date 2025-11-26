@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Anh hùng diệt Rồng</title>
+  <style>
+    *{
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", system-ui, sans-serif;
+    }
+    body{
+      min-height: 100vh;
+      background: radial-gradient(circle at top,#243b55,#141e30);
+      color:#fff;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:20px;
+    }
+    .battle-card{
+      width: 100%;
+      max-width: 900px;
+      background: rgba(0,0,0,.4);
+      border-radius: 24px;
+      padding: 24px 28px;
+      box-shadow: 0 20px 40px rgba(0,0,0,.6);
+    }
+    .battle-header{
+      text-align:center;
+      margin-bottom:18px;
+    }
+    .battle-header h1{
+      font-size:26px;
+      margin-bottom:4px;
+      letter-spacing:1px;
+    }
+    .battle-header span{
+      font-size:13px;
+      color:#ccc;
+    }
+    .arena{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:20px;
+      margin-bottom:18px;
+    }
+    .fighter{
+      flex:1;
+      text-align:center;
+      position:relative;
+    }
+    .fighter-name{
+      font-weight:bold;
+      margin-bottom:6px;
+      letter-spacing:1px;
+    }
+    .avatar{
+      width:150px;
+      height:150px;
+      border-radius:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:70px;
+      margin:0 auto 10px;
+      background:linear-gradient(135deg,rgba(255,255,255,.16),rgba(255,255,255,.02));
+      border:2px solid rgba(255,255,255,.25);
+      box-shadow:0 10px 25px rgba(0,0,0,.6);
+    }
+    .stats{
+      font-size:12px;
+      color:#ddd;
+      margin-bottom:8px;
+    }
+    .hp-bar{
+      width:100%;
+      height:16px;
+      border-radius:999px;
+      background:rgba(0,0,0,.45);
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.2);
+    }
+    .hp-fill{
+      height:100%;
+      width:100%;
+      transition:width .25s;
+    }
+    .hp-hero{ background:linear-gradient(90deg,#6ef195,#35d37e); }
+    .hp-dragon{ background:linear-gradient(90deg,#ff6363,#ff2e63); }
+
+    .vs-label{
+      font-size:26px;
+      margin-bottom:80px;
+      font-weight:bold;
+      color:#ffea7a;
+      text-shadow:0 0 8px rgba(0,0,0,.7);
+    }
+
+    .controls{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:14px;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .buttons{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    button{
+      border:none;
+      padding:10px 22px;
+      border-radius:999px;
+      cursor:pointer;
+      font-size:14px;
+      font-weight:500;
+      letter-spacing:.5px;
+      transition:transform .15s, box-shadow .15s, background .15s;
+    }
+    #btnTurn{
+      background:#ffb703;
+      color:#222;
+      box-shadow:0 8px 18px rgba(0,0,0,.4);
+    }
+    #btnTurn:hover{
+      transform:translateY(-2px);
+      box-shadow:0 10px 24px rgba(0,0,0,.6);
+    }
+    #btnReset{
+      background:#3d5a80;
+      color:#fff;
+    }
+    #btnReset:hover{
+      transform:translateY(-2px);
+      box-shadow:0 8px 18px rgba(0,0,0,.5);
+    }
+    .status{
+      font-size:13px;
+      color:#eee;
+    }
+    .log{
+      background:rgba(0,0,0,.6);
+      border-radius:14px;
+      padding:10px 12px;
+      max-height:220px;
+      overflow-y:auto;
+      font-size:12px;
+    }
+    .log-entry{
+      margin-bottom:6px;
+      line-height:1.3;
+    }
+    .log-entry.hero{ color:#9be7ff; }
+    .log-entry.dragon{ color:#ff9b9b; }
+    .log-entry.system{ color:#ffeaa7; }
+
+    /* hiệu ứng khi trúng đòn / né */
+    .hit{
+      animation: hit .3s;
+    }
+    @keyframes hit{
+      0%{ transform:translateX(0); }
+      20%{ transform:translateX(-8px); }
+      40%{ transform:translateX(8px); }
+      60%{ transform:translateX(-4px); }
+      80%{ transform:translateX(4px); }
+      100%{ transform:translateX(0); }
+    }
+    .dodge{
+      animation: dodge .35s;
+    }
+    @keyframes dodge{
+      0%{ transform:translateY(0); opacity:1; }
+      50%{ transform:translateY(-14px); opacity:.6; }
+      100%{ transform:translateY(0); opacity:1; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="battle-card">
+  <div class="battle-header">
+    <h1>TRẬN CHIẾN ANH HÙNG – DIỆT RỒNG</h1>
+    <span>Hero tấn công trước, rồng phản công sau. Né đòn, chí mạng, tất cả do số phận (Math.random) quyết định!</span>
+  </div>
+
+  <div class="arena">
+    <!-- Anh hùng -->
+    <div class="fighter" id="heroBox">
+      <div class="fighter-name">ANH HÙNG</div>
+      <div class="avatar">🗡️</div>
+      <div class="stats" id="heroStats"></div>
+      <div class="hp-bar">
+        <div class="hp-fill hp-hero" id="heroHpFill"></div>
+      </div>
+      <div class="stats" id="heroHpText"></div>
+    </div>
+
+    <div class="vs-label">VS</div>
+
+    <!-- Rồng -->
+    <div class="fighter" id="dragonBox">
+      <div class="fighter-name">HỎA LONG</div>
+      <div class="avatar">🐉</div>
+      <div class="stats" id="dragonStats"></div>
+      <div class="hp-bar">
+        <div class="hp-fill hp-dragon" id="dragonHpFill"></div>
+      </div>
+      <div class="stats" id="dragonHpText"></div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="buttons">
+      <button id="btnTurn">RA ĐÒN!</button>
+      <button id="btnReset">Chơi lại</button>
+    </div>
+    <div class="status" id="statusText">Nhấn "RA ĐÒN!" để bắt đầu hiệp đấu.</div>
+  </div>
+
+  <div class="log" id="logBox"></div>
+</div>
+
+<script>
+  // ====== THUỘC TÍNH NHÂN VẬT ======
+  let maxHeroHp   = 120;
+  let maxDragonHp = 150;
+
+  let health, dragonHealth;
+  let strength, dragonStr;
+  let agility, dragonAgi;
+  let intel, dragonInt;
+
+  let gameContinue = true;
+
+  function initStats(){
+    health       = maxHeroHp;
+    dragonHealth = maxDragonHp;
+
+    strength  = 25;   // sát thương hero
+    dragonStr = 20;   // sát thương rồng
+
+    agility   = 35;   // % né của hero
+    dragonAgi = 25;   // % né của rồng
+
+    intel     = 30;   // % chí mạng hero
+    dragonInt = 25;   // % chí mạng rồng
+
+    gameContinue = true;
+    document.getElementById("statusText").innerText =
+      "Nhấn \"RA ĐÒN!\" để bắt đầu hiệp đấu.";
+    document.getElementById("btnTurn").disabled = false;
+    clearLog();
+    logSystem("Trận chiến bắt đầu! Anh Hùng ra đòn trước.");
+    updateUI();
+  }
+
+  function updateUI(){
+    // Stats text
+    document.getElementById("heroStats").innerText =
+      "STR " + strength + " | AGI " + agility + " | INT " + intel;
+    document.getElementById("dragonStats").innerText =
+      "STR " + dragonStr + " | AGI " + dragonAgi + " | INT " + dragonInt;
+
+    // HP
+    document.getElementById("heroHpText").innerText   =
+      "Máu: " + Math.max(0,health) + "/" + maxHeroHp;
+    document.getElementById("dragonHpText").innerText =
+      "Máu: " + Math.max(0,dragonHealth) + "/" + maxDragonHp;
+
+    const heroPercent   = Math.max(0, health) / maxHeroHp   * 100;
+    const dragonPercent = Math.max(0, dragonHealth) / maxDragonHp * 100;
+
+    document.getElementById("heroHpFill").style.width   = heroPercent + "%";
+    document.getElementById("dragonHpFill").style.width = dragonPercent + "%";
+  }
+
+  function log(msg, who){
+    const box = document.getElementById("logBox");
+    const div = document.createElement("div");
+    div.className = "log-entry " + (who || "system");
+    div.textContent = msg;
+    box.appendChild(div);
+    box.scrollTop = box.scrollHeight;
+  }
+  function logHero(msg){ log(msg,"hero"); }
+  function logDragon(msg){ log(msg,"dragon"); }
+  function logSystem(msg){ log("★ " + msg,"system"); }
+  function clearLog(){
+    document.getElementById("logBox").innerHTML = "";
+  }
+
+  function animateOnce(elemId, cls){
+    const el = document.getElementById(elemId);
+    el.classList.remove(cls);
+    void el.offsetWidth; // force reflow
+    el.classList.add(cls);
+    setTimeout(()=>{ el.classList.remove(cls); }, 350);
+  }
+
+  // ====== 1 HIỆP ĐÁNH  ======
+  function playTurn(){
+    if (!gameContinue) return;
+
+    document.getElementById("statusText").innerText =
+      "Hiệp đấu đang diễn ra...";
+
+    // --- Anh hùng tấn công ---
+    let heroHit = Math.random() * 100 > dragonAgi; // rồng né nếu random < dragonAgi
+    if (heroHit){
+      dragonHealth -= strength;
+      animateOnce("dragonBox","hit");
+      logHero("TRẢM LONG! Bạn gây " + strength + " sát thương cho Rồng.");
+      // chí mạng hero
+      let heroCritical = Math.random() * 100 < intel;
+      if (heroCritical){
+        let extra = strength * 2;
+        dragonHealth -= extra;
+        logHero("⚡ CHÍ MẠNG! Bạn gây thêm " + extra + " sát thương!");
+      }
+    }else{
+      animateOnce("dragonBox","dodge");
+      logHero("XÍ HỤT! Rồng đã lượn tránh được đòn tấn công của bạn.");
+    }
+
+    updateUI();
+
+    // Kiểm tra rồng chết chưa
+    if (dragonHealth <= 0){
+      dragonHealth = 0;
+      updateUI();
+      gameContinue = false;
+      document.getElementById("btnTurn").disabled = true;
+      logSystem("BATTLE WON! Bạn đã hạ gục Hỏa Long và trở thành Dũng sĩ diệt Rồng!");
+      alert("CHIẾN THẮNG!!! Chúc mừng bạn đã chiến thắng!!!");
+      document.getElementById("statusText").innerText = "Bạn đã chiến thắng!";
+      return;
+    }
+
+    // --- Rồng tấn công ---
+    let dragonHit = Math.random() * 100 > agility; // hero né nếu random < agility
+    if (dragonHit){
+      health -= dragonStr;
+      animateOnce("heroBox","hit");
+      logDragon("HỎA CẦU! Rồng gây " + dragonStr + " sát thương cho bạn.");
+      // chí mạng rồng
+      let dragonCritical = Math.random() * 100 < dragonInt;
+      if (dragonCritical){
+        let extra = dragonStr * 2;
+        health -= extra;
+        logDragon("☠ CHÍ MẠNG! Rồng gây thêm " + extra + " sát thương!");
+      }
+    }else{
+      animateOnce("heroBox","dodge");
+      logDragon("XÍ HỤT! Bạn đã tránh được đòn tấn công của Rồng.");
+    }
+
+    updateUI();
+
+    // Kiểm tra anh hùng còn sống không
+    if (health <= 0){
+      health = 0;
+      updateUI();
+      gameContinue = false;
+      document.getElementById("btnTurn").disabled = true;
+      logSystem("THẤT BẠI! Bạn đã trở thành món hiệp sĩ nướng lá lốt trong thực đơn của Rồng...");
+      alert("THẤT BẠI!!! Chúc mừng bạn đã có tên trên menu món tối của Rồng: Hiệp sĩ nướng lá lốt!");
+      document.getElementById("statusText").innerText = "Bạn đã thua trận...";
+      return;
+    }
+
+    document.getElementById("statusText").innerText =
+      "Hiệp đấu kết thúc. Nhấn \"RA ĐÒN!\" để tiếp tục.";
+  }
+
+  // ====== SỰ KIỆN NÚT ======
+  document.getElementById("btnTurn").addEventListener("click", playTurn);
+  document.getElementById("btnReset").addEventListener("click", initStats);
+
+  // Khởi tạo lần đầu
+  initStats();
+</script>
+
+</body>
+</html>
